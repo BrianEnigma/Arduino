@@ -1,8 +1,4 @@
-// color swirl! connect an RGB LED to the PWM pins as indicated
-// in the #defines
-// public domain, enjoy!
- 
-#if 0 // little string
+#if 1 // little string
 #define REDPIN1 3
 #define GREENPIN1 6
 #define BLUEPIN1 5
@@ -60,7 +56,8 @@ void checkButton()
   }
 }
 
-void fadeBetween(int red1, 
+void fadeBetween(int stringNumber,
+                 int red1, 
                  int green1, 
                  int blue1, 
                  int red2, 
@@ -96,12 +93,18 @@ void fadeBetween(int red1,
       blue1 -= stepValue;
     else if (abs(blue1 - blue2) <= stepValue)
       blue1 = blue2;
-    analogWrite(REDPIN1, red1);
-    analogWrite(REDPIN2, red1);
-    analogWrite(GREENPIN1, green1);
-    analogWrite(GREENPIN2, green1);
-    analogWrite(BLUEPIN1, blue1);
-    analogWrite(BLUEPIN2, blue1);
+    if (1 == stringNumber || 3 == stringNumber)
+    {
+      analogWrite(REDPIN1, red1);
+      analogWrite(GREENPIN1, green1);
+      analogWrite(BLUEPIN1, blue1);
+    }
+    if (2 == stringNumber || 3 == stringNumber) 
+    {
+      analogWrite(REDPIN2, red1);
+      analogWrite(GREENPIN2, green1);
+      analogWrite(BLUEPIN2, blue1);
+    }
     delay(sleepValue);
     checkButton();
   }
@@ -114,47 +117,60 @@ void loopHalloween()
 {
   unsigned char i;
   Serial.println("Going from black to red");
-  fadeBetween(0, 0, 0, 128, 0, 0, STEP_VALUE, 50);
+  fadeBetween(3, 0, 0, 0, 128, 0, 0, STEP_VALUE, 50);
   while (1)
   {
     for (i = 0; i < 10; i++)
     {
       Serial.println("Going to orange");
-      fadeBetween(128, 0, 0, 128, 15, 0, STEP_VALUE, 1000);
+      fadeBetween(3, 128, 0, 0, 128, 15, 0, STEP_VALUE, 1000);
       delay(1000);
       Serial.println("Going to red");
-      fadeBetween(128, 15, 0, 128, 0, 0, STEP_VALUE, 1000);
+      fadeBetween(3, 128, 15, 0, 128, 0, 0, STEP_VALUE, 1000);
       delay(1000);
     }
-    fadeBetween(128, 0, 0, 0, 64, 0, STEP_VALUE, 1000);
+    fadeBetween(3, 128, 0, 0, 0, 64, 0, STEP_VALUE, 1000);
     for (i = 0; i < 10; i++)
     {
       Serial.println("Going to violet");
-      fadeBetween(0, 64, 0, 64, 0, 0, STEP_VALUE, 1000);
-      fadeBetween(64, 0, 0, 64, 0, 64, STEP_VALUE, 1000);
+      fadeBetween(3, 0, 64, 0, 64, 0, 0, STEP_VALUE, 1000);
+      fadeBetween(3, 64, 0, 0, 64, 0, 64, STEP_VALUE, 1000);
       delay(1000);
       Serial.println("Going to green");
-      fadeBetween(64, 0, 64, 64, 0, 0, STEP_VALUE, 1000);
-      fadeBetween(64, 0, 0, 0, 64, 0, STEP_VALUE, 1000);
+      fadeBetween(3, 64, 0, 64, 64, 0, 0, STEP_VALUE, 1000);
+      fadeBetween(3, 64, 0, 0, 0, 64, 0, STEP_VALUE, 1000);
       delay(1000);
     }
-    fadeBetween(0, 64, 0, 128, 0, 0, STEP_VALUE, 1000);
+    fadeBetween(3, 0, 64, 0, 128, 0, 0, STEP_VALUE, 1000);
   }
 }
 
+#define XMAS_STEP_VALUE 1
+#define XMAS_STEP_DELAY 15
+
 void loopXmas()
 {
-  unsigned char i;
+  //unsigned char i;
   Serial.println("Going from black to red");
-  fadeBetween(0, 0, 0, 128, 0, 0, STEP_VALUE, 50);
+  fadeBetween(3, 0, 0, 0, 128, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
   while (1)
   {
-    Serial.println("Red/Green Alternate");
-    for (i = 0; i < 10; i++)
-    {
-      fadeBetween(128, 0, 0, 0, 128, 0, STEP_VALUE, 100);
-      fadeBetween(0, 128, 0, 128, 0, 0, STEP_VALUE, 100);
-    }
+    //Serial.println("Red/Green Alternate");
+    //for (i = 0; i < 10; i++)
+    //{
+      // Fade string one from red to black to green
+      fadeBetween(1, 128, 0, 0, 0, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      fadeBetween(1, 0, 0, 0, 0, 128, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      // Fade string two from red to black to green
+      fadeBetween(2, 128, 0, 0, 0, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      fadeBetween(2, 0, 0, 0, 0, 128, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      // Fade string one from green to black to red
+      fadeBetween(1, 0, 128, 0, 0, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      fadeBetween(1, 0, 0, 0, 128, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      // Fade string two from green to black to red
+      fadeBetween(2, 0, 128, 0, 0, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      fadeBetween(2, 0, 0, 0, 128, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+    //}
   }
 }
 
