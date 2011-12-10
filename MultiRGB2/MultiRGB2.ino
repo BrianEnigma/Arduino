@@ -1,4 +1,4 @@
-#if 1 // little string
+#if 0 // little string
 #define REDPIN1 3
 #define GREENPIN1 6
 #define BLUEPIN1 5
