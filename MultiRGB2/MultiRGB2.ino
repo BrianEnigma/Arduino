@@ -110,31 +110,7 @@ void fadeBetween(int red1,
 #define STEP_VALUE 1
 #define DELAY_VALUE 50
 
-/*
-void loop1()
-{
-  unsigned char i;
-  Serial.println("Going to red");
-  fadeBetween(50, 0, 0, 255, 0, 0, STEP_VALUE, DELAY_VALUE);
-  Serial.println("Going to orange");
-  fadeBetween(255, 0, 0, 255, 30, 0, STEP_VALUE, DELAY_VALUE * 2);
-  Serial.println("At orange");
-  delay(1000);
-  Serial.println("Going to red");
-  fadeBetween(255, 30, 0, 255, 0, 0, STEP_VALUE, DELAY_VALUE);
-  for (i = 0; i < 5; i++)
-  {
-    Serial.println("Going to dark red");
-    fadeBetween(255, 0, 0, 50, 0, 0, 1, DELAY_VALUE);
-  Serial.println("Going to red");
-    fadeBetween(50, 0, 0, 255, 0, 0, 1, DELAY_VALUE);
-  }
-  Serial.println("Going to black");
-  fadeBetween(255, 0, 0, 50, 0, 0, 1, DELAY_VALUE);
-}
-*/
-
-void loop2()
+void loopHalloween()
 {
   unsigned char i;
   Serial.println("Going from black to red");
@@ -166,23 +142,23 @@ void loop2()
   }
 }
 
-void loop3()
+void loopXmas()
 {
   unsigned char i;
   Serial.println("Going from black to red");
   fadeBetween(0, 0, 0, 128, 0, 0, STEP_VALUE, 50);
   while (1)
   {
-    Serial.println("Going to orange");
-    fadeBetween(128, 0, 0, 128, 15, 0, STEP_VALUE, 1000);
-    delay(1000);
-    Serial.println("Going to red");
-    fadeBetween(128, 15, 0, 128, 0, 0, STEP_VALUE, 1000);
-    delay(1000);
+    Serial.println("Red/Green Alternate");
+    for (i = 0; i < 10; i++)
+    {
+      fadeBetween(128, 0, 0, 0, 128, 0, STEP_VALUE, 100);
+      fadeBetween(0, 128, 0, 128, 0, 0, STEP_VALUE, 100);
+    }
   }
 }
 
 void loop() {
-  loop2();
+  loopXmas();
 }
 
