@@ -174,7 +174,23 @@ void loopXmas()
   }
 }
 
+#define RED_STEP_VALUE 1
+#define RED_STEP_DELAY 60
+void loopRed()
+{
+  Serial.println("Going from black to red");
+  // All red
+  fadeBetween(3, 0, 0, 0, 96, 0, 0, RED_STEP_VALUE, RED_STEP_DELAY);
+  while (1)
+  {
+    // Dim
+    fadeBetween(3, 96, 0, 0, 16, 0, 0, RED_STEP_VALUE, RED_STEP_DELAY);
+    // Brighten
+    fadeBetween(3, 16, 0, 0, 96, 0, 0, RED_STEP_VALUE, RED_STEP_DELAY);
+  }
+}
+
 void loop() {
-  loopXmas();
+  loopRed();
 }
 
