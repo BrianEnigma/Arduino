@@ -29,6 +29,13 @@ void setup() {
   pinMode(GREENPIN2, OUTPUT);
   pinMode(BLUEPIN2, OUTPUT);
 
+  digitalWrite(REDPIN1, LOW);
+  digitalWrite(REDPIN2, LOW);
+  digitalWrite(GREENPIN1, LOW);
+  digitalWrite(GREENPIN2, LOW);
+  digitalWrite(BLUEPIN1, LOW);
+  digitalWrite(BLUEPIN2, LOW);
+
   analogWrite(REDPIN1, 0);
   analogWrite(REDPIN2, 0);
   analogWrite(GREENPIN1, 0);
@@ -190,7 +197,23 @@ void loopRed()
   }
 }
 
+#define GREEN_STEP_VALUE 1
+#define GREEN_STEP_DELAY 60
+void loopGreen()
+{
+  Serial.println("Going from black to red");
+  // All red
+  fadeBetween(3, 0, 0, 0, 0, 96, 0, GREEN_STEP_VALUE, GREEN_STEP_DELAY);
+  while (1)
+  {
+    // Dim
+    fadeBetween(3, 0, 96, 0, 0, 16, 0, GREEN_STEP_VALUE, GREEN_STEP_DELAY);
+    // Brighten
+    fadeBetween(3, 0, 16, 0, 0, 96, 0, GREEN_STEP_VALUE, GREEN_STEP_DELAY);
+  }
+}
+
 void loop() {
-  loopRed();
+  loopGreen();
 }
 
