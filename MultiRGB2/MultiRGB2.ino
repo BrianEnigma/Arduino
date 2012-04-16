@@ -213,7 +213,28 @@ void loopGreen()
   }
 }
 
+#define RV_STEP_VALUE 1
+#define RV_STEP_DELAY 60
+#define RV_MAX 64
+#define RV_MIN 8
+void loopRedViolet()
+{
+  // Bright red
+  fadeBetween(3, 0, 0, 0, RV_MAX, 0, 0, RV_STEP_VALUE, RV_STEP_DELAY);
+  while (1)
+  {
+    // Dim red
+    fadeBetween(3, RV_MAX, 0, 0, RV_MIN, 0, 0, RV_STEP_VALUE, RV_STEP_DELAY);
+    // Bright purple red
+    fadeBetween(3, RV_MIN, 0, 0, RV_MAX, 0, RV_MAX, RV_STEP_VALUE, RV_STEP_DELAY);
+    // Dim purple red
+    fadeBetween(3, RV_MAX, 0, RV_MAX, RV_MIN, 0, RV_MIN, RV_STEP_VALUE, RV_STEP_DELAY);
+    // Bright red
+    fadeBetween(3, RV_MIN, 0, RV_MIN, RV_MAX, 0, 0, RV_STEP_VALUE, RV_STEP_DELAY);
+  }
+}
+
 void loop() {
-  loopGreen();
+  loopRedViolet();
 }
 
