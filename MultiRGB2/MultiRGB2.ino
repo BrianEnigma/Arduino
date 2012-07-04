@@ -117,6 +117,8 @@ void fadeBetween(int stringNumber,
   }
 }
 
+#if 0
+
 #define STEP_VALUE 1
 #define DELAY_VALUE 50
 
@@ -234,7 +236,31 @@ void loopRedViolet()
   }
 }
 
+#endif
+
+#define RWB_STEP_VALUE 1
+#define RWB_STEP_DELAY 30
+#define RWB_MAX 32
+#define RWB_MIN 8
+void loopRedWhiteBlue()
+{
+  // Red
+  fadeBetween(3, 0, 0, 0, RWB_MAX, 0, 0, RWB_STEP_VALUE, RWB_STEP_DELAY);
+  while (1)
+  {
+    // White
+    fadeBetween(3, RWB_MAX, 0, 0, RWB_MAX, RWB_MAX, RWB_MAX, RWB_STEP_VALUE, RWB_STEP_DELAY);
+    delay(3000);
+    // Blue
+    fadeBetween(3, RWB_MAX, RWB_MAX, RWB_MAX, 0, 0, RWB_MAX, RWB_STEP_VALUE, RWB_STEP_DELAY);
+    delay(3000);
+    // Red
+    fadeBetween(3, 0, 0, RWB_MAX, RWB_MAX, 0, 0, RWB_STEP_VALUE, RWB_STEP_DELAY);
+    delay(3000);
+  }
+}
+
 void loop() {
-  loopRedViolet();
+  loopRedWhiteBlue();
 }
 
