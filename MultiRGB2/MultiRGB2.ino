@@ -215,6 +215,8 @@ void loopGreen()
   }
 }
 
+#endif
+
 #define RV_STEP_VALUE 1
 #define RV_STEP_DELAY 60
 #define RV_MAX 64
@@ -236,7 +238,7 @@ void loopRedViolet()
   }
 }
 
-#endif
+#if 0
 
 #define RWB_STEP_VALUE 1
 #define RWB_STEP_DELAY 30
@@ -260,7 +262,9 @@ void loopRedWhiteBlue()
   }
 }
 
+#endif
+
 void loop() {
-  loopRedWhiteBlue();
+  loopRedViolet();
 }
 
