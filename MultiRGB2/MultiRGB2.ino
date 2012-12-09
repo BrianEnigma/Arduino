@@ -117,8 +117,6 @@ void fadeBetween(int stringNumber,
   }
 }
 
-#if 0
-
 #define STEP_VALUE 1
 #define DELAY_VALUE 50
 
@@ -153,6 +151,8 @@ void loopHalloween()
     fadeBetween(3, 0, 64, 0, 128, 0, 0, STEP_VALUE, 1000);
   }
 }
+
+#if 0
 
 #define XMAS_STEP_VALUE 1
 #define XMAS_STEP_DELAY 15
@@ -215,8 +215,6 @@ void loopGreen()
   }
 }
 
-#endif
-
 #define RV_STEP_VALUE 1
 #define RV_STEP_DELAY 60
 #define RV_MAX 64
@@ -237,8 +235,6 @@ void loopRedViolet()
     fadeBetween(3, RV_MIN, 0, RV_MIN, RV_MAX, 0, 0, RV_STEP_VALUE, RV_STEP_DELAY);
   }
 }
-
-#if 0
 
 #define RWB_STEP_VALUE 1
 #define RWB_STEP_DELAY 30
@@ -265,6 +261,6 @@ void loopRedWhiteBlue()
 #endif
 
 void loop() {
-  loopRedViolet();
+  loopHalloween();
 }
 
