@@ -28,8 +28,8 @@ unsigned char string2ColorStep[3];
 #define STEP_VALUE 1
 #define POWER_ON_DELAY_VALUE 5
 #define DELAY_VALUE 20
-#define PAUSE 8000
-#define MAX_COLOR 128
+#define PAUSE 1000
+#define MAX_COLOR 96
 
 void setup() {
   pinMode(BUTTONPIN, INPUT);
