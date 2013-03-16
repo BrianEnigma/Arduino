@@ -19,6 +19,7 @@
 #define FADESPEED 5     // make this higher to slow down
  
 void setup() {
+  randomSeed(analogRead(0));
   pinMode(BUTTONPIN, INPUT);
   digitalWrite(BUTTONPIN, HIGH);
   
@@ -117,6 +118,7 @@ void fadeBetween(int stringNumber,
   }
 }
 
+#if 0
 #define STEP_VALUE 1
 #define DELAY_VALUE 50
 
@@ -151,8 +153,6 @@ void loopHalloween()
     fadeBetween(3, 0, 64, 0, 128, 0, 0, STEP_VALUE, 1000);
   }
 }
-
-#if 0
 
 #define XMAS_STEP_VALUE 1
 #define XMAS_STEP_DELAY 15
@@ -260,7 +260,28 @@ void loopRedWhiteBlue()
 
 #endif
 
-void loop() {
-  loopHalloween();
+#define GREEN_RAND_STEP_VALUE 1
+#define GREEN_RAND_STEP_DELAY 60
+void loopRandomGreen()
+{
+    unsigned int r1 = 0, g1 = 0, b1 = 0;
+    unsigned int r2 = 0, g2 = 96, b2 = 0;
+    Serial.println("Going from black to green");
+    // All red
+    fadeBetween(3, r1, g1, b1, r2, g2, b2, GREEN_RAND_STEP_VALUE, GREEN_RAND_STEP_DELAY);
+    while (1)
+    {
+        r1 = r2; g1 = g2; b1 = b2;
+        g2 = random(48, 96);
+        r2 = random(0, g2 / 3);
+        b2 = random(0, g2 / 3);
+		Serial.print(r2); Serial.print(","); Serial.print(g2); Serial.print(","); Serial.print(b2); Serial.println("");
+        fadeBetween(3, r1, g1, b1, r2, g2, b2, GREEN_RAND_STEP_VALUE, GREEN_RAND_STEP_DELAY);
+        delay(2000);
+    }
 }
 
+void loop() {
+  loopRandomGreen();
+  //loopRed();
+}
