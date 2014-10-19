@@ -1,0 +1,20 @@
+OUTSIDE_DIAMETER = 31.75;
+OUTSIDE_RADIUS = (OUTSIDE_DIAMETER / 2);
+TOLERANCE = 0.75;
+REAL_OUTSIDE_RADIUS = OUTSIDE_RADIUS - (TOLERANCE / 2);
+HEIGHT = 12;
+DETAIL = 100;
+WALL_THICKNESS = 2;
+LIP_THICKNESS = 2;
+LIP_HEIGHT = 1;
+
+difference()
+{
+    union()
+    {
+        cylinder(r = REAL_OUTSIDE_RADIUS, h = HEIGHT, $fn = DETAIL);
+        cylinder(r = REAL_OUTSIDE_RADIUS + LIP_THICKNESS, h = LIP_HEIGHT, $fn = DETAIL);
+    }
+    translate(v = [0, 0, -1])
+        cylinder(r = REAL_OUTSIDE_RADIUS - WALL_THICKNESS, h = HEIGHT + 2, $fn = DETAIL);
+}
