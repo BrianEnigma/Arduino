@@ -118,7 +118,7 @@ void fadeBetween(int stringNumber,
   }
 }
 
-#if 0
+#if 1
 #define STEP_VALUE 1
 #define DELAY_VALUE 50
 
@@ -182,6 +182,7 @@ void loopXmas()
     //}
   }
 }
+#endif
 
 #define RED_STEP_VALUE 1
 #define RED_STEP_DELAY 60
@@ -258,8 +259,6 @@ void loopRedWhiteBlue()
   }
 }
 
-#endif
-
 #define GREEN_RAND_STEP_VALUE 1
 #define GREEN_RAND_STEP_DELAY 60
 void loopRandomGreen()
@@ -281,7 +280,49 @@ void loopRandomGreen()
     }
 }
 
+#define BLUE_STEP_VALUE 1
+#define BLUE_STEP_DELAY 30
+void loopBlueWhite()
+{
+  Serial.println("Going from black to red");
+  // All red
+  fadeBetween(3, 0, 0, 0, 0, 0, 64, BLUE_STEP_VALUE, BLUE_STEP_DELAY);
+  while (1)
+  {
+    // Dim
+    fadeBetween(3,  0,  0, 64,  0,  0, 32, BLUE_STEP_VALUE, BLUE_STEP_DELAY);
+    fadeBetween(3,  0,  0, 32, 32, 32, 32, BLUE_STEP_VALUE, BLUE_STEP_DELAY);
+    delay(2000);
+    // Brighten
+    fadeBetween(3, 32, 32, 32,  0,  0, 32, BLUE_STEP_VALUE, BLUE_STEP_DELAY);
+    fadeBetween(3,  0,  0, 32,  0,  0, 64, BLUE_STEP_VALUE, BLUE_STEP_DELAY);
+    delay(5000);
+  }
+}
+
+void loopBlue()
+{
+  Serial.println("Going from black to red");
+  // All red
+  fadeBetween(3, 0, 0, 0, 0, 0, 64, BLUE_STEP_VALUE, BLUE_STEP_DELAY);
+  while (1)
+  {
+    // Dim
+    fadeBetween(3,  0,  0, 64,  0,  0, 32, BLUE_STEP_VALUE, BLUE_STEP_DELAY);
+    delay(2000);
+    // Brighten
+    fadeBetween(3,  0,  0, 32,  0,  0, 64, BLUE_STEP_VALUE, BLUE_STEP_DELAY);
+    delay(2000);
+  }
+}
+
 void loop() {
-  loopRandomGreen();
-  //loopRed();
+    //loopRedWhiteBlue();
+    //loopRed();
+    //loopRedViolet();
+    loopHalloween();
+    //loopBlueWhite();
+    //loopBlue();
+    //loopGreen();
+    //loopRandomGreen();
 }
