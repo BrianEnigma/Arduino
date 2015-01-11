@@ -173,12 +173,15 @@ void loopXmas()
       // Fade string two from red to black to green
       fadeBetween(2, 128, 0, 0, 0, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
       fadeBetween(2, 0, 0, 0, 0, 128, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      // Pause
+      delay(5000);
       // Fade string one from green to black to red
       fadeBetween(1, 0, 128, 0, 0, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
       fadeBetween(1, 0, 0, 0, 128, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
       // Fade string two from green to black to red
       fadeBetween(2, 0, 128, 0, 0, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
       fadeBetween(2, 0, 0, 0, 128, 0, 0, XMAS_STEP_VALUE, XMAS_STEP_DELAY);
+      delay(5000);
     //}
   }
 }
@@ -320,9 +323,10 @@ void loop() {
     //loopRedWhiteBlue();
     //loopRed();
     //loopRedViolet();
-    loopHalloween();
+    //loopHalloween();
     //loopBlueWhite();
     //loopBlue();
     //loopGreen();
     //loopRandomGreen();
+    loopXmas();
 }
