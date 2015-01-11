@@ -30,21 +30,23 @@ void setup() {
     pinMode(BUTTON_LEFT, INPUT_PULLUP);
     pinMode(BUTTON_RIGHT, INPUT_PULLUP);
     pinMode(LED,OUTPUT);
-//  Serial.begin(9600);
-//  strip.show(); // Initialize all pixels to 'off'
+#if 0
+    Serial.begin(9600);
+#endif
     randomSeed(analogRead(0));
     strip.begin();
     lightsOut();
 }
 
-#define MODE_OFF     0
-#define MODE_WHITE   1
-#define MODE_RED     2
-#define MODE_GREEN   3
-#define MODE_BLUE    4
-#define MODE_RANDOM  5
-#define MODE_STRIPES 6
-#define MODE_MAX     7
+#define MODE_OFF             0
+#define MODE_WHITE           1
+#define MODE_WHITE_SHOOTING  2
+#define MODE_RED             3
+#define MODE_GREEN           4
+#define MODE_BLUE            5
+#define MODE_RANDOM          6
+#define MODE_STRIPES         7
+#define MODE_MAX             8
 unsigned char g_mode = 0;
 unsigned char g_previousMode = 255;
 unsigned char g_brightness = 128;
@@ -52,9 +54,13 @@ unsigned char g_brightness = 128;
 /* ============================================================================ */
 
 const unsigned char WHITE_STEP = 10;
+int whiteShootingTimer = 0;
+int whiteShootingPixel = -1;
 void startWhite()
 {
     uint32_t color;
+    whiteShootingTimer = 280;
+    whiteShootingPixel = -1;
     for (int value = 0; value <= g_brightness; value += WHITE_STEP)
     {
         color = strip.Color(value, value, value);
@@ -94,6 +100,47 @@ void endWhite()
         strip.show();
         delay(10);
     }
+}
+void doWhiteShooting(bool up, bool down)
+{
+    uint32_t color;
+    color = strip.Color(g_brightness, g_brightness, g_brightness);
+
+    whiteShootingTimer++;
+    if (-1 == whiteShootingPixel)
+    {
+        if (whiteShootingTimer >= 300)
+        {
+            whiteShootingPixel = 0;
+            whiteShootingTimer = 0;
+        }
+    } else
+    {
+        if (whiteShootingTimer >= 2)
+        {
+            whiteShootingPixel++;
+            whiteShootingTimer = 0;
+        }
+    }
+    if (whiteShootingPixel >= NEOPIXEL_COUNT)
+    {
+        whiteShootingPixel = -1;
+        whiteShootingTimer = 0;
+    }
+
+    for (uint16_t pixel = 0; pixel < NEOPIXEL_COUNT; pixel++) 
+        strip.setPixelColor(pixel, color);
+    if (-1 != whiteShootingPixel)
+        strip.setPixelColor(whiteShootingPixel, strip.Color(255, 255, 255));
+    strip.show();
+    if (up || down)
+    {
+        if (up)
+            g_brightness += WHITE_STEP;
+        else
+            g_brightness -= WHITE_STEP;
+    }
+    delay(10);
 }
 
 /* ============================================================================ */
@@ -220,19 +267,48 @@ void endRandom()
 
 unsigned int stripeCounter = 0;
 const uint32_t RAINBOW[] = {0xFF0000,0xFF4000,0xFF8000,0xFFC000,0xFFFF00,0xAAFF00,0x55FF00,0x00FF00,0x00AA55,0x0055AA,0x0000FF,0x1900D4,0x3200AB,0x4B0082,0x6700C0,0x8F00FF};
+uint32_t getRainbowColor()
+{
+#if 0
+    return RAINBOW[random(0, 16)];
+#else
+    uint32_t result = RAINBOW[random(0, 16)];
+    for (int i = 0; i <= 16; i+= 8)
+    {
+        result = (result & ~((uint32_t) 0xFF << i)) | ((uint32_t) (((result >> i) & 0xFF) * g_brightness / 255) << i);
+#if 0
+        Serial.print("   ");
+        Serial.print(result, HEX);
+        Serial.println();
+#endif
+    }
+#if 0
+    Serial.print(result, HEX);
+    Serial.println();
+#endif
+    return result;
+#endif
+}
 void doStripes(bool up, bool down, bool doDelay)
 {
-    
-    // TODO: scale based on g_brightness
-    
-    if (!doDelay || ++stripeCounter >= 20)
+    //strip.setBrightness(g_brightness);
+    if (!doDelay || ++stripeCounter >= 10)
     {
         for (uint16_t pixel = NEOPIXEL_COUNT - 2; pixel >= 1; pixel--)
             strip.setPixelColor(pixel, strip.getPixelColor(pixel - 1));
-        strip.setPixelColor(0, RAINBOW[random(0, 16)]);
+        strip.setPixelColor(0, getRainbowColor());
         strip.show();
         stripeCounter = 0;
     }
+    if (up || down)
+    {
+        if (up)
+            g_brightness += WHITE_STEP;
+        else
+            g_brightness -= WHITE_STEP;
+        //strip.setBrightness(g_brightness);
+    }
+    
     if (doDelay)
         delay(100);
 }
@@ -255,6 +331,7 @@ void endStripes()
         strip.show();
         delay(10);
     }
+    //strip.setBrightness(0xFF);
     stripeCounter = 0;
 }
 
@@ -290,23 +367,25 @@ void loop()
     {
         switch(g_previousMode)
         {
-        case MODE_OFF:          break;
-        case MODE_WHITE:        endWhite(); break;
-        case MODE_RED:          endRGB(1); break;
-        case MODE_GREEN:        endRGB(2); break;
-        case MODE_BLUE:         endRGB(3); break;
-        case MODE_RANDOM:       endRandom(); break;
-        case MODE_STRIPES:      endStripes(); break;
+        case MODE_OFF:              break;
+        case MODE_WHITE:        
+        case MODE_WHITE_SHOOTING:   endWhite(); break;
+        case MODE_RED:              endRGB(1); break;
+        case MODE_GREEN:            endRGB(2); break;
+        case MODE_BLUE:             endRGB(3); break;
+        case MODE_RANDOM:           endRandom(); break;
+        case MODE_STRIPES:          endStripes(); break;
         }
         switch(g_mode)
         {
-        case MODE_OFF:          break;
-        case MODE_WHITE:        startWhite(); break;
-        case MODE_RED:          startRGB(1); break;
-        case MODE_GREEN:        startRGB(2); break;
-        case MODE_BLUE:         startRGB(3); break;
-        case MODE_RANDOM:       startRandom(); break;
-        case MODE_STRIPES:      startStripes(); break;
+        case MODE_OFF:              break;
+        case MODE_WHITE:        
+        case MODE_WHITE_SHOOTING:   startWhite(); break;
+        case MODE_RED:              startRGB(1); break;
+        case MODE_GREEN:            startRGB(2); break;
+        case MODE_BLUE:             startRGB(3); break;
+        case MODE_RANDOM:           startRandom(); break;
+        case MODE_STRIPES:          startStripes(); break;
         }
     }
     
@@ -317,6 +396,7 @@ void loop()
             lightsOut();
         break;
     case MODE_WHITE:            doWhite(buttonUp, buttonDown); break;
+    case MODE_WHITE_SHOOTING:   doWhiteShooting(buttonUp, buttonDown); break;
     case MODE_RED:              doRGB(buttonUp, buttonDown, 1); break;
     case MODE_GREEN:            doRGB(buttonUp, buttonDown, 2); break;
     case MODE_BLUE:             doRGB(buttonUp, buttonDown, 3); break;
