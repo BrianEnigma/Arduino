@@ -31,6 +31,7 @@ void setup()
         Serial.println(seconds);
         delay(1000);
     }
+    Serial.println("START");
 }
 
 const int addressLines[] = 
@@ -53,7 +54,7 @@ unsigned char readByte(unsigned int address)
         address >>= 1;
     }
     // Delay a bit to allow the ROM to stabilize
-    delay(100);
+    delay(10);
     // Read data bytes
     for (unsigned char bitCounter = 0; bitCounter < 8; bitCounter++)
     {
@@ -62,11 +63,15 @@ unsigned char readByte(unsigned int address)
     return result;
 }
 
+const unsigned int MAX_ADDRESS = 1024;
+const unsigned int MAX_BLOCK = MAX_ADDRESS / 16;
+
 void loop()
 {
     unsigned int address;
     unsigned char dataByte;
 #if 0
+    // Print the first 32 bytes
    for (address = 0; address < 32; address++)
    {
      Serial.print(address, 16);
@@ -75,9 +80,8 @@ void loop()
      Serial.println(dataByte, 16);
    }
 #else
-    // Print the first 256 bytes
     address = 0;
-    for (unsigned int block = 0; block < 10; block++)
+    for (unsigned int block = 0; block < MAX_BLOCK; block++)
     {
         Serial.print("0x");
         Serial.print(address, 16);
@@ -93,6 +97,7 @@ void loop()
         Serial.println("");
     }
 #endif    
+    Serial.println("END");
     // Wait 5 seconds before repeating
     for (unsigned int counter = 0; counter < 5; counter++)
     {
