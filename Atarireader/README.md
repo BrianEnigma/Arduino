@@ -68,6 +68,8 @@ I ran into several issues during the build, detailed more fully in the blog post
 2. The edge connector pins have a breadboard-incompatible footprint. I really wanted to build this on a temporary breadboard, but the edge connector's through-hole pins only have one effective row of pins between them. This is not a wide enough footprint to fit over the center of a breadboard (where a DIP-package chip would normally sit). I ended up using a prototyping space, soldering wires to the pins, and using those to connect to the Arduino.
 3. The edge connector is just barely tall enough to reach the cartridge. In fact, I could not push it all the way down onto the board and solder on the back side, as you do with most through-hole components. I had to put a piece of masking tape on the back of the board, gently put the card edge connector into the proto-space, without pushing too hard. The legs in this configuration, like stilts, give it a couple of extra millimeters. I then had to solder on the same side as the connector.
 
+In the future, I would definitely see if I could find a taller connector with better pin spacing.
+
 ##Serial Dump Software
 
 You can find the serial dump software, which gets loaded into the Arduino, at `Atarireader/Atarireader.ino`. Note that because the hardware design overloads the RX pin, you will be unable to load this into the Arduino if a cartridge is plugged in.
