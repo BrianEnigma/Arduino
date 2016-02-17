@@ -70,10 +70,14 @@ I ran into several issues during the build, detailed more fully in the blog post
 
 ##Serial Dump Software
 
-You can find the serial dump software, which gets loaded into the Arduino, at Atarireader/Atarireader.ino. Note that because the hardware design overloads the RX pin, you will be unable to load this into the Arduino if a cartridge is plugged in.
+You can find the serial dump software, which gets loaded into the Arduino, at `Atarireader/Atarireader.ino`. Note that because the hardware design overloads the RX pin, you will be unable to load this into the Arduino if a cartridge is plugged in.
 
 Once running, the serial dump software counts backwards from 10 on the serial port — time to let you plug in a cartridge and start up an app to capture the serial port on your desktop — before dumping ROM content.
 
+##Serial Capture
+
+You can capture the ROM dump using the Arduino IDE's serial monitor (and copy/paste into a text file) or by using a serial terminal emulator such as Minicom.
+
 ##Reassembly Software
 
-TKTKTKTK
+The `reassemble.rb` script will take a capture file and translate it into a binary file.
