@@ -83,3 +83,11 @@ You can capture the ROM dump using the Arduino IDE's serial monitor (and copy/pa
 ##Reassembly Software
 
 The `reassemble.rb` script will take a capture file and translate it into a binary file.
+
+##Future Design Considerations
+
+This project was built on a workbench in an afternoon as a proof-of-concept. If I wanted to do a more formal job with this design I would look toward the following:
+
+- Taller card edge connector or some way to physically lift it better.
+- Design and 3D print a latch-release that fits around the card edge connector. Some cartridges have fully exposed card edges, but most need pins to push in a latch release before the edge connector is exposed. It's easy enough to manually do this with a plastic spudger tool, but it would be nice to build that into the design.
+- Use a GPIO extender to twiddle the higher address lines so that I can reach them from code without manually bank switching by manually grounding or energizing those pins.
