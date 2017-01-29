@@ -29,16 +29,20 @@ void testAnimation()
     clearStrip();
 }
 
-void hostAnimation()
+void showHostAnimation()
 {
-    unsigned long long COLORS[] = {0xff0000, 0x00ff00, 0x0000ff, 0xffffff, 0x000000};
-    for (int color = 0; color < 5; color++)
+    unsigned long long COLORS[] = {0xff0000, 0x00ff00, 0x0000ff, 0xffffff};
+    for (int color = 0; color < 4; color++)
     {
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < 4; i++)
         {
-            strip.setPixelColor(i, COLORS[color]);
-            strip.show();
-            delay(20);
+            for (int playerNumber = 0; playerNumber < 3; playerNumber++)
+            {
+                strip.setPixelColor(8 * playerNumber + i, COLORS[color]);
+                strip.setPixelColor(8 * (playerNumber + 1) - i - 1, COLORS[color]);
+                strip.show();
+            }
+            delay(30);
         }
     }
     clearStrip();
@@ -69,26 +73,35 @@ void showWinAnimation(int playerNumber)
     }
 }
 
-void loop() {
-    for (int player = 0; player < 3; player++)
+int lockedInPlayer = -1;
+
+void loop() 
+{
+    // Look for first player to buzz in.
+    if (-1 == lockedInPlayer)
     {
-        if (!digitalRead(PLAYER_PIN[player]))
+        for (int player = 0; player < 3; player++)
         {
-            showWinAnimation(player);
+            if (!digitalRead(PLAYER_PIN[player]))
+            {
+                lockedInPlayer = player;
+            }
         }
     }
+    // Animate for locked-in player
+    if (-1 != lockedInPlayer)
+        showWinAnimation(lockedInPlayer);
+    // Reset lock-in.
     if (!digitalRead(HOST_RESET_PIN))
-    {
-        for (int i = 0; i < 24; i++)
-        {
-            strip.setPixelColor(i, 0xffffff);
-            strip.show();
-        }
-        delay(100);
-    }
+        lockedInPlayer = -1;
+
     if (!digitalRead(HOST_ANIMATE_PIN))
     {
-        hostAnimation();
+        while (!digitalRead(HOST_ANIMATE_PIN))
+        {
+            showHostAnimation();
+        }
+        clearStrip();
     }
 }
 
